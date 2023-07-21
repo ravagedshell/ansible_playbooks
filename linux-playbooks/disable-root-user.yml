@@ -1,0 +1,9 @@
+---
+    - hosts: [your-hostset-name]
+      tasks:
+      - name: Disable Ability to Login with Root User
+        ansible.builtin.user:
+          name: root
+          password_lock: yes
+          shell: /usr/bin/nologin
+...

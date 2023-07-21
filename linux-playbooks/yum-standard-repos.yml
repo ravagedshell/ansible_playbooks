@@ -1,0 +1,42 @@
+---
+    - hosts: [your-hostset-name]
+      tasks:
+      - name: Add EPEL Yum Repo
+        ansible.builtin.yum_repository:
+          name: epel
+          description: EPEL YUM repo
+          baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+          enabled: yes
+      - name: Add InfluxDB Yum Repo
+        ansible.builtin.yum_repository:
+          name: influxdb
+          description: InfluxDB Repository - RHEL 
+          baseurl: https://repos.influxdata.com/rhel/7/x86_64/stable/
+          gpgkey: https://repos.influxdata.com/influxdb.key
+          enabled: yes
+          gpgcheck: yes
+      - name: Add RPM fusion Free Yum Repo
+        ansible.builtin.yum_repository:
+          name: rpmfusion-free
+          description: RPM Fusion for Fedora - Free
+          metalink: https://mirrors.rpmfusion.org/metalink?repo=free-fedora-$releasever&arch=$basearch
+          enabled: yes
+          gpgcheck: no
+      - name: Add RPM fusion Free Updates Yum Repo
+        ansible.builtin.yum_repository:
+          name: rpmfusion-free-updates
+          description: RPM Fusion Updates for Fedora - Free
+          metalink: https://mirrors.rpmfusion.org/metalink?repo=free-fedora-updates-released-$releasever&arch=$basearch
+          enabled: yes
+          gpgcheck: no
+      - name: Add RPM fusion Free Updates Yum Repo
+        ansible.builtin.yum_repository:
+          name: rpmfusion-free-updates
+          description: RPM Fusion Updates for Fedora - Free
+          metalink: https://mirrors.rpmfusion.org/metalink?repo=free-fedora-updates-released-$releasever&arch=$basearch
+          enabled: yes
+          gpgcheck: no
+...
+    
+    
+    

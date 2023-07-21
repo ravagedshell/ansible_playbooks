@@ -1,0 +1,13 @@
+---
+- hosts: [your-hostset-name]
+  tasks:
+  - name: Fix freezing when copying large files over USB
+    ansible.builtin.blockinfile:
+      path: /etc/sysctl.conf
+      block: |
+        vm.dirty_bytes=50331648
+        vm.dirty_background_bytes = 16777216
+...
+
+
+

@@ -1,0 +1,14 @@
+---
+- hosts: home
+  tasks:
+  - name: Clear DNF Cache
+    ansible.builtin.command:
+      cmd: dnf clean all
+  - name: Run DNF Update
+    dnf:
+      name: "*"
+      state: latest
+  - name: Run DNF Autoremove
+    dnf:
+      autoremove: yes
+...

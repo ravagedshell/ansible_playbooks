@@ -1,0 +1,47 @@
+---
+- hosts: [your-hostset-name]
+  tasks:
+  - name: Disable Root Login over SSH
+    ansible.builtin.lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^PermitRootLogin'
+      line: PermitRootLogin no
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Disable Password Authentication over SSH
+    ansible.builtin.lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^PasswordAuthentication'
+      line: PasswordAuthentication no
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Disable Users with Empty Passwords over SSH
+    ansible.builtin.lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^PermitEmptyPasswords'
+      line: PermitEmptyPasswords no
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Require Public Key Auth for SSH
+    ansible.builtin.lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^PubkeyAuthentication'
+      line: PubkeyAuthentication yes
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Insert/Update Cipher Configuration Block in /etc/ssh/sshd_config
+    ansible.builtin.blockinfile:
+      path: /etc/ssh/sshd_config
+      block: |
+        Ciphers aes128-ctr,aes192-ctr,aes256-ctr
+        HostKeyAlgorithms ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,ssh-rsa,ssh-dss
+        KexAlgorithms ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256
+        MACs hmac-sha2-256,hmac-sha2-512
+...
+
+
+
