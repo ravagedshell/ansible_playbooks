@@ -11,3 +11,8 @@ I'm working on writing some more playbooks, but these have sufficed for my homel
 | fix-usb-freezing.yml          | Fixes the annoying issue where copying large files from USB causes system lockup.                 |
 | sshd_config.yml               | Sets my standard SSHD config                                                                      |
 | yum-standard-repos.yml        | Sets my standard repos to be enabled for yum/dnf                                                  |
+| add-ssh-key.yml               | Adds my SSH public key to the ~/.ssh/authorized_keys file                                         |
+| apt-add-defaults.yml          | Installs common utils I basically always use on a Linux box                                       |
+| apt-get-upgrade.yml           | Performs standard apt-get upgrade, removes orphaned packages                                      |
+| install-cisco-amp.yml         | Installs Cisco Secure Endpoint                                                                    |
+
