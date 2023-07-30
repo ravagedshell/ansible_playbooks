@@ -1,0 +1,7 @@
+- hosts: all
+  tasks:
+  - name: Creating the authorized key file with your SSH Key included
+    copy:
+      dest: "~/.ssh/authorized_keys"
+      content: |
+        ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEMM1WX2Q8iNYnbLY3pMYurwGJZQY/FGDeWy6JIlSZfX ravagedshell@proton.me

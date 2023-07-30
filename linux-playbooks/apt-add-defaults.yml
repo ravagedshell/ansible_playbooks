@@ -1,0 +1,29 @@
+---
+    - hosts: all
+      become: yes
+      tasks:
+      - name: Update the package cache if older than 30 minutes
+        ansible.builtin.apt:
+          update_cache: yes
+          cache_valid_time: 1800
+      - name: Install python 3
+        ansible.builtin.apt:
+          name: "python3"
+          state: latest
+      - name: Install nmap package
+        ansible.builtin.apt:
+          name: "nmap"
+          state: latest
+      - name: Install masscan package
+        ansible.builtin.apt:
+          name: "masscan"
+          state: latest
+      - name: Install dnsutils package
+        ansible.builtin.apt:
+          name: "dnsutils"
+          state: latest
+      - name: Install git
+        ansible.builtin.apt:
+          name: "git"
+          state: latest
+...

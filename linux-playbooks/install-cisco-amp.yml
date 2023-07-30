@@ -1,0 +1,33 @@
+---
+- hosts: all
+  vars: 
+    - amp_url: "yourampdownloadurl"
+  become: yes
+  tasks:
+  - name: Create the debsig policy folder
+    ansible.builtin.file:
+      path: "/etc/debsig/policies/914E5BE0F2FD178F"
+      state: directory
+  - name: Create the debsig policy for validating the downloaded AMP installer
+    copy:
+      dest: "/etc/debsig/policies/914E5BE0F2FD178F/ciscoampconnector.pol"
+      content: |
+          # <?xml version="1.0"?>
+          # <!DOCTYPE Policy SYSTEM "https://www.debian.org/debsig/1.0/policy.dtd">
+          # <Policy xmlns="https://www.debian.org/debsig/1.0/">
+          #     <Origin Name="Debsig" id="914E5BE0F2FD178F" Description="Cisco AMP for Endpoints"/>
+          #     <Selection>
+          #         <Required Type="origin" File="debsig.gpg" id="914E5BE0F2FD178F"/>
+          #     </Selection>
+          #     <Verification MinOptional="0">
+          #         <Required Type="origin" File="debsig.gpg" id="914E5BE0F2FD178F"/>
+          #     </Verification>
+          # </Policy>
+  - name: Download AMP Connector Installer
+    ansible.builtin.get_url:
+      url: "{{ amp_url }}"
+      dest: /tmp/cisco_amp_installer.deb
+  - name: Install the connector
+    ansible.builtin.apt:
+      deb: /tmp/cisco_amp_installer.deb
+...

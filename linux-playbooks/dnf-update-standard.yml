@@ -1,5 +1,5 @@
 ---
-- hosts: home
+- hosts: all
   tasks:
   - name: Clear DNF Cache
     ansible.builtin.command:

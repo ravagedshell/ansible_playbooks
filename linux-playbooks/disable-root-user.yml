@@ -1,5 +1,6 @@
 ---
-    - hosts: [your-hostset-name]
+    - hosts: all
+      become: yes
       tasks:
       - name: Disable Ability to Login with Root User
         ansible.builtin.user:
