@@ -1,0 +1,25 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: Create the scripts folder if it does not exist
+    ansible.builtin.file:
+      path: "/opt/scripts"
+      state: directory
+  - name: Create the update script
+    copy:
+      dest: "/opt/scripts/auto-update.sh"
+      mode: 0755
+      content: |
+        #!/bin/bash
+        apt-get update
+        apt-get upgrade -y 
+        apt-get autoremove
+  - name: Create the cron job
+    ansible.builtin.cron:
+      name: "Autoupdate"
+      minute: 0
+      hour: 0
+      day: "*"
+      job: "/opt/scripts/auto-update.sh"
+...

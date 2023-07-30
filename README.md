@@ -15,4 +15,5 @@ I'm working on writing some more playbooks, but these have sufficed for my homel
 | apt-add-defaults.yml          | Installs common utils I basically always use on a Linux box                                       |
 | apt-get-upgrade.yml           | Performs standard apt-get upgrade, removes orphaned packages                                      |
 | install-cisco-amp.yml         | Installs Cisco Secure Endpoint                                                                    |
-
+| cron-auto-update.yml          | Adds a script for automatic updates to /opt/scripts and enables it to run daily at 00:00          |
+ 
