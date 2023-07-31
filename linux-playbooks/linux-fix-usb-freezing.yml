@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: linux
   become: yes
   tasks:
   - name: Fix freezing when copying large files over USB

@@ -1,0 +1,95 @@
+# This is a sample inventory file you can use to get started
+# I've sanitized it from my internal hostnames and naming standards.
+# I promise I don't name my servers ridiculously long names like this. That would be a sin.
+all:
+  children:
+    homelab:
+      children:
+        myairportcode:
+          children:
+            # My Windows Domain Controllers
+            domain:
+              hosts:
+                domaincontroller01.notarealdomain.com:
+                domaincontroller02.notarealdomain.com:
+            # My PiHole DNS Servers
+            ns:
+              hosts:
+                nameserver01.notarealdomain.com:
+                nameserver02.notarealdomain.com:
+            # My Ubuntu Based Step CA Servers
+            ca:
+              hosts:
+                certauthority01.notarealdomain.com:
+            # My Ubuntu Based Servers that Control my UPS(s)
+            power:
+              hosts:
+                powermanager01.notarealdomain.com:
+                powermanager02.notarealdomain.com:
+            # My Ubuntu Based Servers running RadKit Services
+            radkit:
+              hosts:
+                radkit01.notarealdomain.com:
+            # My Ubuntu Based Servers running Plex Media Server
+            plex:
+              hosts:
+                plex01.notarealdomain.com:
+            # My Ubuntu Based Servers hosting a private TETRA Update Server for Cisco AMP
+            tetra:
+              hosts:
+                tetra01.notarealdomain.com:
+            # My Ubuntu Based Servers used for my DevNet Studies
+            devnet:
+              hosts:
+                devnet01.devnet.notarealdomain.com:
+                devnet02.devnet.notarealdomain.com:
+                devnet03.devnet.notarealdomain.com:
+            # My ESXi Servers
+            esxi:
+              hosts:
+                vmware01.notarealdomain.com:
+                vmware02.notarealdomain.com:
+                microvmware01.notarealdomain.com:
+            # My Cisco Modeling Labs (CML, the artist formerly known as VIRL) Servers (Ubuntu Based)
+            cml:
+              hosts:
+                virl01.notarealdomain.com:
+                virl02.notarealdomain.com:
+            # Cisco IOS Based Switches and Routers
+            ios_device:
+              hosts:
+                switch01.notarealdomain.com:
+            # Palo Alto PAN-OS Based Devices
+            panos:
+              hosts:
+                paloalto.notarealdomain.com:
+            # HPE/Aruba Wireless Access Points
+            hpe:
+              hosts:
+                aruba.notarealdomain.com:
+        # Child Groupings so I can manage multiple groups at once  
+        ubuntu:
+          children:
+            tetra:
+            radkit:
+            power:
+            ns:
+            devnet:
+            plex:
+            ca:
+        linux:
+          children:
+            debian:
+              children:
+                ubuntu:
+            fedora:
+            redhat:
+        windows:
+          children:
+            domain:
+        networking:
+          children:
+            ios_switch:
+            panos:
+            aruba:
+            

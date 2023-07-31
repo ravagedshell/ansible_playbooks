@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: debian
   become: yes
   tasks:
   - name: Create the scripts folder if it does not exist

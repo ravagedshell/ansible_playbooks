@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: debian
   vars_prompt: 
     - name: amp_download_url
       prompt: "Enter the download URL provided from the AMP Console"

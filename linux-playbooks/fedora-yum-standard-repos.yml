@@ -1,5 +1,5 @@
 ---
-    - hosts: [your-hostset-name]
+    - hosts: fedora
       tasks:
       - name: Add EPEL Yum Repo
         ansible.builtin.yum_repository:
