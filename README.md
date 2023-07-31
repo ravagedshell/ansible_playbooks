@@ -5,8 +5,8 @@ I'm working on writing some more playbooks, but these have sufficed for my homel
 
 # Linux Playbooks (linux-playbooks/)
 
-| Playbook ID                   || File                                | Description                                                                                        |
-|-------------------------------||-------------------------------------|----------------------------------------------------------------------------------------------------|
+| Playbook ID                   | File                                 | Description                                                                                        |
+|-------------------------------|--------------------------------------|----------------------------------------------------------------------------------------------------|
 | 01                            | debian-apt-get-upgrade.yml           | Performs standard apt-get upgrade, removes orphaned packages                                       |
 | 02                            | debian-cron-auto-update.yml          | Adds a script for automatic updates to /opt/scripts and enables it to run daily at 00:00           |
 | 03                            | debian-install-cisco-amp.yml         | Installs Cisco Secure Endpoint                                                                     |
