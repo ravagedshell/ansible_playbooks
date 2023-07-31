@@ -1,0 +1,15 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: Remove the Cisco AMP Connector
+    ansible.builtin.apt:
+      name: "ciscoampconnector"
+      state: "absent"
+  - name: Remove the Cisco Orbital Agent
+    ansible.builtin.apt:
+      name: "cisco-orbital"
+      state: "absent"
+  - name: Purge all remnants of AMP and Orbital
+    ansible.builtin.command: /opt/cisco/amp/bin/purge_amp_local_data
+...

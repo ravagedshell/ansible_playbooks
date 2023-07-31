@@ -1,10 +1,46 @@
 ---
 - hosts: all
-  vars: 
-    - amp_url: "yourampdownloadurl"
+  vars_prompt: 
+    - name: amp_download_url
+      prompt: "Enter the download URL provided from the AMP Console"
+      private: no
   become: yes
   tasks:
-  - name: Create the debsig policy folder
+  - name: Ensure debsig-verify is installed
+    ansible.builtin.apt:
+      name: "debsig-verify"
+      state: latest
+      update_cache: yes
+  - name: Create the Cisco GPG Public Key File
+    copy:
+      dest: /tmp/cisco.gpg
+      content: |
+        -----BEGIN PGP PUBLIC KEY BLOCK-----
+        Version: GnuPG v2.0.22 (GNU/Linux)
+
+        mQENBFWJxNUBCADDm2KVpvglCVPGXAVayBSwQcRjf1RJIKfSnHtiUXkHCsldGeo5
+        7wwAIXn/7iAfl7i5QQ9MKcCcpdSQ6yw5R3NDTJuk6iDVYGP8nN6Y920qIAwGwJDN
+        LkXtiJGImOa4MOfeQxEPdMmfGeqChY9Ht2/5EmS07jufLeRtFRhHzRtwnpUo6gv5
+        JdKgmFWy/u34iEL3O471Ic2rgp7Xpo73H+iEYlMyt8D0fc/7oO6gUxYzcejhgzqq
+        yIoXQBQfuImJZmxUmoz/eB+BHhE9DLSIp21NMW/1T4xSRpFFxDFuToQdTOTZI0tf
+        lx038AKq+n6xhHzmOXg6440XgU/DSE/eodWFABEBAAG0SFNvdXJjZUZpcmUgRmly
+        ZUFNUCAoRmlyZUFNUCBMaW51eCBDb25uZWN0b3IpIDxhbXAtbWFpbGVyQHNvdXJj
+        ZWZpcmUuY29tPokBPgQTAQIAKAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AF
+        AmBPo3QFCRBpeR8ACgkQkU5b4PL9F48wXAf+IDv++Z0k40DdRE7Egp78ugfoK2Ia
+        N+7zDu2aQackyXbOamlWuhNzRQH4wWs77QHo3IqS2W+VmVWDJIbbRmzoXuAyTW52
+        6wErUMXj0cWr3JCckYFEgtNFS8yk5L67M36G5aIh4vgfgUMxSCfhFV0/t2V1YR74
+        eGubll12FidNcl1gAjNwbR1/jV2LfifYAk9QHy8z8WjQeuR5MLbKJ0ZmyL6ovA79
+        vCh/uMuXNBZnB6WQvxfI3OAMPmO6WFQWy9mLH5hdA9Wou/CQkC2Ib1yfvSMqROfM
+        b7A64/fGq7MMNIV48+gCEpllPqLcjs57jwkIwqhw37wKwhQcD6j3ZbZHVg==
+        =Hufx
+        -----END PGP PUBLIC KEY BLOCK-----
+  - name: Create the keyring folder for the Cisco GPG
+    ansible.builtin.file:
+      path: "/usr/share/debsig/keyrings/914E5BE0F2FD178F"
+      state: directory
+  - name: Import the Cisco GPG Key
+    ansible.builtin.command: "gpg --dearmor --output /usr/share/debsig/keyrings/914E5BE0F2FD178F/debsig.gpg /tmp/cisco.gpg"
+  - name: Create the debsig policy folder for AMP
     ansible.builtin.file:
       path: "/etc/debsig/policies/914E5BE0F2FD178F"
       state: directory
@@ -12,22 +48,26 @@
     copy:
       dest: "/etc/debsig/policies/914E5BE0F2FD178F/ciscoampconnector.pol"
       content: |
-          # <?xml version="1.0"?>
-          # <!DOCTYPE Policy SYSTEM "https://www.debian.org/debsig/1.0/policy.dtd">
-          # <Policy xmlns="https://www.debian.org/debsig/1.0/">
-          #     <Origin Name="Debsig" id="914E5BE0F2FD178F" Description="Cisco AMP for Endpoints"/>
-          #     <Selection>
-          #         <Required Type="origin" File="debsig.gpg" id="914E5BE0F2FD178F"/>
-          #     </Selection>
-          #     <Verification MinOptional="0">
-          #         <Required Type="origin" File="debsig.gpg" id="914E5BE0F2FD178F"/>
-          #     </Verification>
-          # </Policy>
+        <?xml version="1.0"?>
+        <!DOCTYPE Policy SYSTEM "https://www.debian.org/debsig/1.0/policy.dtd">
+        <Policy xmlns="https://www.debian.org/debsig/1.0/">
+            <Origin Name="Debsig" id="914E5BE0F2FD178F" Description="Cisco AMP for Endpoints"/>
+            <Selection>
+                <Required Type="origin" File="debsig.gpg" id="914E5BE0F2FD178F"/>
+            </Selection>
+            <Verification MinOptional="0">
+                <Required Type="origin" File="debsig.gpg" id="914E5BE0F2FD178F"/>
+            </Verification>
+        </Policy>
   - name: Download AMP Connector Installer
     ansible.builtin.get_url:
-      url: "{{ amp_url }}"
+      url: "{{ amp_download_url }}"
       dest: /tmp/cisco_amp_installer.deb
-  - name: Install the connector
+  - name: Validate the Installer Signature
+    ansible.builtin.command: debsig-verify /tmp/cisco_amp_installer.deb
+    register: debsig_output
+  - name: Install the connector if Validation Completed
     ansible.builtin.apt:
       deb: /tmp/cisco_amp_installer.deb
+    when: debsig_output.stdout.find('Verified package') != -1
 ...
