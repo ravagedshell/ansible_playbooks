@@ -13,7 +13,7 @@
   - name: Disable Password Authentication over SSH
     ansible.builtin.lineinfile:
       path: /etc/ssh/sshd_config
-      regexp: '^PasswordAuthentication'
+      regexp: '^PasswordAuthentication yes'
       line: PasswordAuthentication no
       owner: root
       group: root
@@ -34,6 +34,86 @@
       owner: root
       group: root
       mode: '0644'
+  - name: Configure Idle Timeout Interval
+    ansible.builtin.lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^ClientAliveInterval'
+      line: ClientAliveInterval 600
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Configure Keepalive Timout Count
+    ansible.builtin.lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^ClientAliveCountMax'
+      line: ClientAliveCountMax 5
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Disable .rhosts
+    ansible.builtin.lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^IgnoreRhosts'
+      line: IgnoreRhosts yes
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Disable host-based authentication
+    ansible.builtin.lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^HostbasedAuthentication'
+      line: HostbasedAuthentication no
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Ignore user known hosts
+    ansible.builtin.lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^IgnoreUserKnownHosts'
+      line: IgnoreUserKnownHosts yes
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Disable TCP Keep Alive Messages - use ClientAlive mesages instead
+    ansible.builtin.lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^TCPKeepAlive'
+      line: TCPKeepAlive no
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Set Maximum number of Open Sessions to 2
+    ansible.builtin.lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^MaxSessions'
+      line: MaxSessions 2
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Set Max Number of Unauthenticated Open Connections to 3
+    ansible.builtin.lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^MaxStartups'
+      line: MaxStartups 3
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Set the Max Number of Authentication Attempts to 4
+    ansible.builtin.lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^MaxAuthTries'
+      line: MaxAuthTries 4
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Set the Max Time authentication is left open before closing connectionsto 60 seconds
+    ansible.builtin.lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^LoginGraceTime'
+      line: LoginGraceTime 60
+      owner: root
+      group: root
+      mode: '0644'
   - name: Insert/Update Cipher Configuration Block in /etc/ssh/sshd_config
     ansible.builtin.blockinfile:
       path: /etc/ssh/sshd_config
@@ -42,6 +122,11 @@
         HostKeyAlgorithms ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,ssh-rsa,ssh-dss
         KexAlgorithms ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256
         MACs hmac-sha2-256,hmac-sha2-512
+  - name: Restart SSH Service
+    ansible.builtin.systemd:
+      state: restarted
+      daemon_reload: true
+      name: ssh
 ...
 
 
