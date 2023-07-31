@@ -7,11 +7,11 @@ I'm working on writing some more playbooks, but these have sufficed for my homel
 
 | Playbook ID                   | File                                 | Description                                                                                        |
 |-------------------------------|--------------------------------------|----------------------------------------------------------------------------------------------------|
-| 01                            | debian-apt-get-upgrade.yml           | Performs standard apt-get upgrade, removes orphaned packages                                       |
-| 02                            | debian-cron-auto-update.yml          | Adds a script for automatic updates to /opt/scripts and enables it to run daily at 00:00           |
-| 03                            | debian-install-cisco-amp.yml         | Installs Cisco Secure Endpoint                                                                     |
-| 04                            | debian-uninstall-cisco-amp.yml       | Installs Cisco Secure Endpoint                                                                     |
-| 05                            | devnet-apt-add-defaults.yml          | Installs common utils I basically always use on a Linux box                                        |
+| 01                            | debian-apt-get-upgrade.yml           | Performs standard apt-get upgrade, removes orphaned packages on debian based systems.              |
+| 02                            | debian-cron-auto-update.yml          | Adds a script for automatic updates and enables it to run daily at 00:00 on debian based systems.  |
+| 03                            | debian-install-cisco-amp.yml         | Installs Cisco Secure Endpoint on debian based systems.                                            |
+| 04                            | debian-uninstall-cisco-amp.yml       | Removes Cisco Secure Endpoint from debian based systems.                                           |
+| 05                            | devnet-apt-add-defaults.yml          | Installs common utils I'm using during my DevNet Studies.                                          |
 | 06                            | fedora-dnf-update-standard.yml       | Updates all packaged on system to latest version on my fedora boxes.                               |
 | 07                            | fedora-yum-standard-repos.yml        | Sets my standard repos to be enabled for yum/dnf on my fedora Boxes.                               |
 | 08                            | linux-add-ssh-key.yml                | Adds my SSH public key to the ~/.ssh/authorized_keys file to all linux boxes.                      |
