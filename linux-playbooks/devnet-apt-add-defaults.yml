@@ -26,4 +26,8 @@
         ansible.builtin.apt:
           name: "git"
           state: latest
+      - name: Install Docker
+        ansible.builtin.apt:
+          name: "docker"
+          state: "latest"
 ...
